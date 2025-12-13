@@ -4,6 +4,16 @@ const DEFAULT_SIZE = 16;
 const MAX_SIZE = 100;
 const CONTAINER_SIZE = 960;
 
+let isMouseDown = false;
+
+// Track mouse state globally on the document
+document.addEventListener("mousedown", () => {
+  isMouseDown = true;
+});
+document.addEventListener("mouseup", () => {
+  isMouseDown = false;
+});
+
 function createGrid(size) {
   container.innerHTML = "";
   const squareSize = CONTAINER_SIZE / size;
@@ -12,11 +22,14 @@ function createGrid(size) {
     square.classList.add("grid-square");
     square.style.width = `${squareSize}px`;
     square.style.height = `${squareSize}px`;
-    square.addEventListener("mouseenter", () => {
+    // Change background on mousedown or mouseenter while mouse is down
+    square.addEventListener("mousedown", () => {
       square.classList.add("hovered");
     });
-    square.addEventListener("mouseleave", () => {
-      square.classList.remove("hovered");
+    square.addEventListener("mouseenter", () => {
+      if (isMouseDown) {
+        square.classList.add("hovered");
+      }
     });
     container.appendChild(square);
   }
